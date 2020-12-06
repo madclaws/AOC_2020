@@ -2,8 +2,8 @@ defmodule Day1 do
   @moduledoc """
     Day 1: Report Repair
     --------------------
-    Part1: Find the multiple of 2 numbers, that will add upto 2020, from the expense report.
-    Part2: Find the multiple of 3 numbers, that will add upto 2020, from the expense report.
+    Part1 -> Find the multiple of 2 numbers, that will add upto 2020, from the expense report.
+    Part2 -> Find the multiple of 3 numbers, that will add upto 2020, from the expense report.
   """
 
   def solve_part1 do
