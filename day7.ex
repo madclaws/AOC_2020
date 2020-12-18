@@ -17,7 +17,11 @@ defmodule Day7 do
   end
 
   def solve_part2 do
+    bag_list = generate_data_from_input()
+    |> prepare_map_data()
+    |> Map.to_list()
 
+    find_total_bags(bag_list, bag_list)
   end
 
   def list_of_parent_bags(bag_list, bag_ref_list, bag_name \\ "shiny gold", parent_bags \\ [])
@@ -33,8 +37,30 @@ defmodule Day7 do
     end
   end
 
+  def find_total_bags(bag_list, bag_ref_list, bag_name \\ "dark olive", total_bags \\ 0)
+  def find_total_bags([], _bag_ref_list, _bag_name, total_bags), do: total_bags
+  def find_total_bags([h | t], bag_ref_list, bag_name, total_bags) do
+    {parent_bag, child_bags} = h
+    case parent_bag === bag_name do
+      true -> child_bag_list = Map.to_list(child_bags)
+        find_total_bags(t, bag_ref_list, bag_name, find_bags_from_list(child_bag_list, bag_ref_list,
+        total_bags))
+      _ -> find_total_bags(t, bag_ref_list, bag_name, total_bags)
+    end
+  end
+
+  def find_bags_from_list(bag_list, bag_ref_list, total_bags \\ 0)
+  def find_bags_from_list([], _bag_ref_list , total_bags), do: total_bags
+  def find_bags_from_list([h | t], bag_ref_list , total_bags) do
+    {bag_name, count} = h
+    find_total_bags(t, bag_ref_list, total_bags + count + (count * find_total_bags(bag_ref_list,
+     bag_ref_list, 0)))
+  end
+
+
+
   def generate_data_from_input do
-    File.stream!("bag_rules.txt")
+    File.stream!("bag_rules_test.txt")
     |> Enum.map(&String.trim/1)
   end
 
